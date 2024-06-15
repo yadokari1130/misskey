@@ -6,7 +6,16 @@
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i } from '@/account.js';
 
-export const ACHIEVEMENT_TYPES = [
+export const ACHIEVEMENT_TYPES = ['notes100000']
+export const ACHIEVEMENT_BADGES = {	
+	'notes100000': {
+		img: '/fluent-emoji/267e.png',
+		bg: 'linear-gradient(0deg, rgb(255 232 119), rgb(255 140 41))',
+		frame: 'platinum',
+	}
+}
+
+const ACHIEVEMENT_TYPES_ = [
 	'notes1',
 	'notes10',
 	'notes100',
@@ -87,7 +96,7 @@ export const ACHIEVEMENT_TYPES = [
 	'bubbleGameDoubleExplodingHead',
 ] as const;
 
-export const ACHIEVEMENT_BADGES = {
+const ACHIEVEMENT_BADGES_ = {
 	'notes1': {
 		img: '/fluent-emoji/1f4dd.png',
 		bg: 'linear-gradient(0deg, rgb(59 187 116), rgb(199 211 102))',

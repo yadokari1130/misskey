@@ -10,7 +10,9 @@ import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import { NotificationService } from '@/core/NotificationService.js';
 
-export const ACHIEVEMENT_TYPES = [
+export const ACHIEVEMENT_TYPES = ['notes100000']
+
+const ACHIEVEMENT_TYPES_ = [
 	'notes1',
 	'notes10',
 	'notes100',
