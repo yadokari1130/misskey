@@ -26,8 +26,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkButton>
 	</div>
 </template>
-<template v-else-if="tweetId && tweetExpanded">
-	<div ref="twitter">
+<template v-else-if="tweetId">
+	<Tweet :tweet-id="tweetId" :theme="defaultStore.state.darkMode ? 'dark' : 'light'" lang="ja">
+		<template v-slot:loading>
+			<div style="height: 300px; border: 2px solid"><MkLoading/></div>
+		</template>
+	</Tweet>
+	<!-- div ref="twitter">
 		<iframe
 			ref="tweet"
 			allow="fullscreen;web-share"
@@ -41,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkButton :small="true" inline @click="tweetExpanded = false">
 			<i class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
-	</div>
+	</div-->
 </template>
 <div v-else>
 	<component :is="self ? 'MkA' : 'a'" :class="[$style.link, { [$style.compact]: compact }]" :[attr]="self ? url.substring(local.length) : url" rel="nofollow noopener" :target="target" :title="url">
@@ -65,11 +70,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</article>
 	</component>
 	<template v-if="showActions">
-		<div v-if="tweetId" :class="$style.action">
+		<!--div v-if="tweetId" :class="$style.action">
 			<MkButton :small="true" inline @click="tweetExpanded = true">
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
 			</MkButton>
-		</div>
+		</div-->
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
 			<MkButton :small="true" inline @click="playerEnabled = true">
 				<i class="ti ti-player-play"></i> {{ i18n.ts.enablePlayer }}
@@ -92,6 +97,8 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { versatileLang } from '@/scripts/intl-const.js';
 import { defaultStore } from '@/store.js';
+import Tweet from "vue-tweet";
+import MkLoading from '@/components/global/MkLoading.vue';
 
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
