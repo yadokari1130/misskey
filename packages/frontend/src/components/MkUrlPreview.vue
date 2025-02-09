@@ -89,13 +89,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, onDeactivated, onUnmounted, ref } from 'vue';
+import { url as local } from '@@/js/config.js';
+import { versatileLang } from '@@/js/intl-const.js';
 import type { summaly } from '@misskey-dev/summaly';
-import { url as local } from '@/config.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
-import { versatileLang } from '@/scripts/intl-const.js';
 import { transformPlayerUrl } from '@/scripts/player-url-transform.js';
 import { defaultStore } from '@/store.js';
 import Tweet from "vue-tweet";
@@ -187,7 +187,7 @@ window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLa
 		sensitive.value = info.sensitive ?? false;
 	});
 
-function adjustTweetHeight(message: any) {
+function adjustTweetHeight(message: MessageEvent) {
 	if (message.origin !== 'https://platform.twitter.com') return;
 	const embed = message.data?.['twttr.embed'];
 	if (embed?.method !== 'twttr.private.resize') return;
@@ -200,14 +200,16 @@ function openPlayer(): void {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkYouTubePlayer.vue')), {
 		url: requestUrl.href,
 	}, {
-		// TODO
+		closed: () => {
+			dispose();
+		},
 	});
 }
 
-(window as any).addEventListener('message', adjustTweetHeight);
+window.addEventListener('message', adjustTweetHeight);
 
 onUnmounted(() => {
-	(window as any).removeEventListener('message', adjustTweetHeight);
+	window.removeEventListener('message', adjustTweetHeight);
 });
 </script>
 
@@ -226,7 +228,7 @@ onUnmounted(() => {
 	height: 1.5em;
 	padding: 0;
 	margin: 0;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 	background: rgba(128, 128, 128, 0.2);
 	opacity: 0.7;
 
@@ -247,7 +249,7 @@ onUnmounted(() => {
 	position: relative;
 	display: block;
 	font-size: 14px;
-	box-shadow: 0 0 0 1px var(--divider);
+	box-shadow: 0 0 0 1px var(--MI_THEME-divider);
 	border-radius: 8px;
 	overflow: clip;
 
@@ -277,7 +279,7 @@ onUnmounted(() => {
 	height: 100%;
 	background-position: center;
 	background-size: cover;
-	background-color: var(--bg);
+	background-color: var(--MI_THEME-bg);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -324,7 +326,6 @@ onUnmounted(() => {
 .siteName {
 	display: inline-block;
 	margin: 0;
-	color: var(--urlPreviewInfo);
 	font-size: 0.8em;
 	line-height: 16px;
 	vertical-align: top;

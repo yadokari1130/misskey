@@ -115,6 +115,10 @@ export const packedMetaLiteSchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
+		enableTestcaptcha: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 		swPublickey: {
 			type: 'string',
 			optional: false, nullable: true,
@@ -252,6 +256,15 @@ export const packedMetaLiteSchema = {
 			enum: ['local', 'global'],
 			optional: false, nullable: false,
 			default: 'local',
+		},
+		maxFileSize: {
+			type: 'number',
+			optional: false, nullable: false,
+		},
+		federation: {
+			type: 'string',
+			enum: ['all', 'specified', 'none'],
+			optional: false, nullable: false,
 		},
 	},
 } as const;
