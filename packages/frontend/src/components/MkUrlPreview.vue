@@ -26,13 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkButton>
 	</div>
 </template>
-<template v-else-if="tweetId">
-	<Tweet :tweet-id="tweetId" :theme="defaultStore.state.darkMode ? 'dark' : 'light'" lang="ja">
-		<template v-slot:loading>
-			<div style="height: 300px; border: 2px solid"><MkLoading/></div>
-		</template>
-	</Tweet>
-	<!-- div ref="twitter">
+<template v-else-if="tweetId && tweetExpanded">
+	<div ref="twitter">
 		<iframe
 			ref="tweet"
 			allow="fullscreen;web-share"
@@ -46,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkButton :small="true" inline @click="tweetExpanded = false">
 			<i class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
-	</div-->
+	</div>
 </template>
 <div v-else>
 	<component :is="self ? 'MkA' : 'a'" :class="[$style.link, { [$style.compact]: compact }]" :[attr]="maybeRelativeUrl" rel="nofollow noopener" :target="target" :title="url">
@@ -70,11 +65,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</article>
 	</component>
 	<template v-if="showActions">
-		<!--div v-if="tweetId" :class="$style.action">
+		<div v-if="tweetId" :class="$style.action">
 			<MkButton :small="true" inline @click="tweetExpanded = true">
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
 			</MkButton>
-		</div-->
+		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
 			<MkButton :small="true" inline @click="playerEnabled = true">
 				<i class="ti ti-player-play"></i> {{ i18n.ts.enablePlayer }}
@@ -96,7 +91,6 @@ import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
-import Tweet from "vue-tweet";
 import { transformPlayerUrl } from '@/utility/url-preview.js';
 import { store } from '@/store.js';
 import { prefer } from '@/preferences.js';
@@ -136,7 +130,7 @@ const player = ref({
 } as SummalyResult['player']);
 const playerEnabled = ref(false);
 const tweetId = ref<string | null>(null);
-const tweetExpanded = ref(props.detail);
+const tweetExpanded = ref(true);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 const tweetHeight = ref(150);
 const unknownUrl = ref(false);
